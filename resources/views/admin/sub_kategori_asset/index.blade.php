@@ -118,7 +118,7 @@
             <tbody>
                 @foreach($subKategoriAssets as $subKategoriAsset)
                     <tr>
-                        <td>{{ $subKategoriAsset->kategoriAsset->kategori_asset ?? 'N/A' }}</td>
+                        <td>{{ $subKategoriAsset->kategoriAsset->kategori_asset }}</td>
                         <td>{{ $subKategoriAsset->kode_sub_kategori_asset }}</td>
                         <td>{{ $subKategoriAsset->sub_kategori_asset }}</td>
                         <td>
