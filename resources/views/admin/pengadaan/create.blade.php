@@ -27,178 +27,163 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            max-width: 800px;
             margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
         }
         label {
             font-weight: bold;
-            margin-bottom: 5px;
             display: block;
-            color: #333;
-        }
-        input[type="text"], input[type="date"], input[type="number"], select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .form-actions {
-            display: flex;
-            justify-content: space-between;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button[type="submit"] {
-            background-color: #007bff;
-            color: white;
-        }
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        button[type="button"] a {
-            text-decoration: none;
-            color: white;
-        }
-        button[type="button"] {
-            background-color: #6c757d;
-        }
-        button[type="button"]:hover {
-            background-color: #5a6268;
-        }
-        @media (max-width: 600px) {
-            .form-container {
-                padding: 15px;
-                width: 90%;
-            }
-            h1 { font-size: 1.5rem; }
-            button {
-                width: 48%;
-                font-size: 14px;
-            }
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>Tambah Pengadaan</h1>
-
     <div class="form-container">
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
+        <h1>Tambah Pengadaan</h1>
+        
         <form action="{{ route('admin.pengadaan.store') }}" method="POST">
             @csrf
+            
+            <div class="form-group">
+                <label>Master Barang</label>
+                <select name="id_master_barang" class="form-control @error('id_master_barang') is-invalid @enderror">
+                    <option value="">Pilih Master Barang</option>
+                    @foreach($masterBarangs as $mb)  
+                        <option value="{{ $mb->id_barang }}">{{ $mb->nama_barang }}</option>
+                    @endforeach
+                </select>
+                @error('id_master_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="id_master_barang">Master Barang</label>
-            <select name="id_master_barang" id="id_master_barang" class="form-control @error('id_master_barang') is-invalid @enderror" required>
-                <option value="">Pilih Master Barang</option>
-                @foreach($masterBarangs as $mb)  
-                    <option value="{{ $mb->id_barang }}">{{ $mb->nama_barang }}</option>
-                @endforeach
-            </select>
-            @error('id_master_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Depresiasi</label>
+                <select name="id_depresiasi" class="form-control @error('id_depresiasi') is-invalid @enderror">
+                    <option value="">Pilih Depresiasi</option>
+                    @foreach($depresiasis as $d)
+                        <option value="{{ $d->id_depresiasi }}">{{ $d->lama_depresiasi }}</option>
+                    @endforeach
+                </select>
+                @error('id_depresiasi')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="id_depresiasi">Depresiasi</label>
-            <select name="id_depresiasi" id="id_depresiasi" class="form-control @error('id_depresiasi') is-invalid @enderror" required>
-                <option value="">Pilih Depresiasi</option>
-                @foreach($depresiasis as $d)
-                    <option value="{{ $d->id_depresiasi }}">{{ $d->lama_depresiasi }}</option>
-                @endforeach
-            </select>
-            @error('id_depresiasi')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Merk</label>
+                <select name="id_merk" class="form-control @error('id_merk') is-invalid @enderror">
+                    <option value="">Pilih Merk</option>
+                    @foreach($merks as $m)
+                        <option value="{{ $m->id_merk }}">{{ $m->merk }}</option>
+                    @endforeach
+                </select>
+                @error('id_merk')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="id_merk">Merk</label>
-            <select name="id_merk" id="id_merk" class="form-control @error('id_merk') is-invalid @enderror" required>
-                <option value="">Pilih Merk</option>
-                @foreach($merks as $m)
-                    <option value="{{ $m->id_merk }}">{{ $m->merk }}</option>
-                @endforeach
-            </select>
-            @error('id_merk')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Satuan</label>
+                <select name="id_satuan" class="form-control @error('id_satuan') is-invalid @enderror">
+                    <option value="">Pilih Satuan</option>
+                    @foreach($satuans as $s)
+                        <option value="{{ $s->id_satuan }}">{{ $s->satuan }}</option>
+                    @endforeach
+                </select>
+                @error('id_satuan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="id_satuan">Satuan</label>
-            <select name="id_satuan" id="id_satuan" class="form-control @error('id_satuan') is-invalid @enderror" required>
-                <option value="">Pilih Satuan</option>
-                @foreach($satuans as $s)
-                    <option value="{{ $s->id_satuan }}">{{ $s->satuan }}</option>
-                @endforeach
-            </select>
-            @error('id_satuan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Sub Kategori Asset</label>
+                <select name="id_sub_kategori_asset" class="form-control @error('id_sub_kategori_asset') is-invalid @enderror">
+                    <option value="">Pilih Sub Kategori Asset</option>
+                    @foreach($subKategoriAssets as $ska)
+                        <option value="{{ $ska->id_sub_kategori_asset }}">{{ $ska->sub_kategori_asset }}</option>
+                    @endforeach
+                </select>
+                @error('id_sub_kategori_asset')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="id_sub_kategori_asset">Sub Kategori Asset</label>
-            <select name="id_sub_kategori_asset" id="id_sub_kategori_asset" class="form-control @error('id_sub_kategori_asset') is-invalid @enderror" required>
-                <option value="">Pilih Sub Kategori Asset</option>
-                @foreach($subKategoriAssets as $ska)
-                    <option value="{{ $ska->id_sub_kategori_asset }}">{{ $ska->sub_kategori_asset }}</option>
-                @endforeach
-            </select>
-            @error('id_sub_kategori_asset')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Distributor</label>
+                <select name="id_distributor" class="form-control @error('id_distributor') is-invalid @enderror">
+                    <option value="">Pilih Distributor</option>
+                    @foreach($distributors as $d)
+                        <option value="{{ $d->id_distributor }}">{{ $d->nama_distributor }}</option>
+                    @endforeach
+                </select>
+                @error('id_distributor')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="id_distributor">Distributor</label>
-            <select name="id_distributor" id="id_distributor" class="form-control @error('id_distributor') is-invalid @enderror" required>
-                <option value="">Pilih Distributor</option>
-                @foreach($distributors as $d)
-                    <option value="{{ $d->id_distributor }}">{{ $d->nama_distributor }}</option>
-                @endforeach
-            </select>
-            @error('id_distributor')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Kode Pengadaan</label>
+                <input type="text" name="kode_pengadaan" class="form-control @error('kode_pengadaan') is-invalid @enderror">
+                @error('kode_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="kode_pengadaan">Kode Pengadaan</label>
-            <input type="text" name="kode_pengadaan" id="kode_pengadaan" class="form-control @error('kode_pengadaan') is-invalid @enderror" required>
-            @error('kode_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>No Invoice</label>
+                <input type="text" name="no_invoice" class="form-control @error('no_invoice') is-invalid @enderror">
+                @error('no_invoice')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="no_invoice">No Invoice</label>
-            <input type="text" name="no_invoice" id="no_invoice" class="form-control @error('no_invoice') is-invalid @enderror" required>
-            @error('no_invoice')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>No Seri Barang</label>
+                <input type="text" name="no_seri_barang" class="form-control @error('no_seri_barang') is-invalid @enderror">
+                @error('no_seri_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="no_seri_barang">No Seri Barang</label>
-            <input type="text" name="no_seri_barang" id="no_seri_barang" class="form-control @error('no_seri_barang') is-invalid @enderror" required>
-            @error('no_seri_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Tahun Produksi</label>
+                <input type="text" name="tahun_produksi" class="form-control @error('tahun_produksi') is-invalid @enderror">
+                @error('tahun_produksi')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="tahun_produksi">Tahun Produksi</label>
-            <input type="text" name="tahun_produksi" id="tahun_produksi" class="form-control @error('tahun_produksi') is-invalid @enderror" required>
-            @error('tahun_produksi')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Tanggal Pengadaan</label>
+                <input type="date" name="tgl_pengadaan" class="form-control @error('tgl_pengadaan') is-invalid @enderror">
+                @error('tgl_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="tgl_pengadaan">Tanggal Pengadaan</label>
-            <input type="date" name="tgl_pengadaan" id="tgl_pengadaan" class="form-control @error('tgl_pengadaan') is-invalid @enderror" required>
-            @error('tgl_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Harga Barang</label>
+                <input type="number" name="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror">
+                @error('harga_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="harga_barang">Harga Barang</label>
-            <input type="number" name="harga_barang" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" required>
-            @error('harga_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Nilai Barang</label>
+                <input type="number" name="nilai_barang" class="form-control @error('nilai_barang') is-invalid @enderror">
+                @error('nilai_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="nilai_barang">Nilai Barang</label>
-            <input type="number" name="nilai_barang" id="nilai_barang" class="form-control @error('nilai_barang') is-invalid @enderror" required>
-            @error('nilai_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>FB</label>
+                <select name="fb" class="form-control @error('fb') is-invalid @enderror">
+                    <option value="">Pilih FB</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+                @error('fb')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="fb">FB</label>
-            <select name="fb" id="fb" class="form-control @error('fb') is-invalid @enderror" required>
-                <option value="">Pilih FB</option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-            </select>
-            @error('fb')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <div class="form-group">
+                <label>Keterangan</label>
+                <input type="text" name="keterangan" class="form-control @error('keterangan') is-invalid @enderror">
+                @error('keterangan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
 
-            <label for="keterangan">Keterangan</label>
-            <input type="text" name="keterangan" id="keterangan" class="form-control @error('keterangan') is-invalid @enderror" required>
-            @error('keterangan')<div class="invalid-feedback">{{ $message }}</div>@enderror
-
-            <div class="form-actions">
-                <button type="submit">Simpan</button>
-                <button type="button"><a href="{{ route('admin.pengadaan.index') }}">Kembali</a></button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <a href="{{ route('admin.pengadaan.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
         </form>
     </div>

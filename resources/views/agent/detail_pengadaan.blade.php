@@ -99,26 +99,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                        $nilaiPenyusutanPerBulan = $pengadaan->depresiasi ? $pengadaan->nilai_barang / $pengadaan->depresiasi->lama_depresiasi : 0;
-                        $nilaiSisa = $pengadaan->nilai_barang;
-                        $durasi = $pengadaan->depresiasi ? $pengadaan->depresiasi->lama_depresiasi : 0;
-                        @endphp
+                    @php
+$hargaPerolehan = $pengadaan->nilai_barang;
+$nilaiPenyusutanPerBulan = $hargaPerolehan / $pengadaan->depresiasi->lama_depresiasi;
+$nilaiSisa = $hargaPerolehan - $nilaiPenyusutanPerBulan;
+$durasi = $pengadaan->depresiasi->lama_depresiasi;
+@endphp
 
-                        <tr>
-                            <td>1</td>
-                            <td>Rp {{ number_format($nilaiSisa, 0, ',', '.') }}</td>
-                        </tr>
+<tr>
+    <td>1</td>
+    <td>Rp {{ number_format($nilaiSisa, 0, ',', '.') }}</td>
+</tr>
 
-                        @for ($i = 2; $i <= $durasi; $i++)
-                            @php
-                            $nilaiSisa -= $nilaiPenyusutanPerBulan;
-                            @endphp
-                            <tr>
-                                <td>{{ $i }}</td>
-                                <td>Rp {{ number_format(max(0, $nilaiSisa), 0, ',', '.') }}</td>
-                            </tr>
-                        @endfor
+@for ($i = 2; $i <= $durasi; $i++)
+    @php
+    if ($i == $durasi) {
+        $nilaiSisa = 0;
+    } else {
+        $nilaiSisa -= $nilaiPenyusutanPerBulan;
+    }
+    @endphp
+    <tr>
+        <td>{{ $i }}</td>
+        <td>Rp {{ number_format(max(0, $nilaiSisa), 0, ',', '.') }}</td>
+    </tr>
+@endfor
                     </tbody>
                 </table>
             </div>

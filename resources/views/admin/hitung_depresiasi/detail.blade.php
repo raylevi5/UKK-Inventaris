@@ -45,32 +45,42 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Bulan ke-</th>
-                            <th>Nilai Barang</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @php
-$hargaPerolehan = $hitungDepresiasi->nilai_barang;
-$lamaDepresiasi = $hitungDepresiasi->durasi;
-$nilaiPenyusutanPerBulan = $hargaPerolehan / $lamaDepresiasi;
-@endphp
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Bulan ke-</th>
+                <th>Nilai Barang</th>
+            </tr>
+        </thead>
+        <tbody>
+        @php
+        $hargaPerolehan = $hitungDepresiasi->nilai_barang;
+        $lamaDepresiasi = $hitungDepresiasi->durasi;
+        $nilaiPenyusutanPerBulan = $hargaPerolehan / $lamaDepresiasi;
+        $nilaiSisa = $hargaPerolehan - $nilaiPenyusutanPerBulan;
+        @endphp
 
-@for ($i = 1; $i <= $lamaDepresiasi; $i++)
-    @php
-    $nilaiBuku = $hargaPerolehan - ($nilaiPenyusutanPerBulan * ($i - 1));
-    @endphp
-    <tr>
-        <td>{{ $i }}</td>
-        <td>Rp {{ number_format(max(0, $nilaiBuku), 0, ',', '.') }}</td>
-    </tr>
-@endfor
-                    </tbody>
-                </table>
-            </div>
+        <tr>
+            <td>1</td>
+            <td>Rp {{ number_format($nilaiSisa, 0, ',', '.') }}</td>
+        </tr>
+
+        @for ($i = 2; $i <= $lamaDepresiasi; $i++)
+            @php
+            if ($i == $lamaDepresiasi) {
+                $nilaiSisa = 0;
+            } else {
+                $nilaiSisa -= $nilaiPenyusutanPerBulan;
+            }
+            @endphp
+            <tr>
+                <td>{{ $i }}</td>
+                <td>Rp {{ number_format(max(0, $nilaiSisa), 0, ',', '.') }}</td>
+            </tr>
+        @endfor
+        </tbody>
+    </table>
+</div>
 
             <div class="mt-3">
                 <a href="{{ route('admin.hitung_depresiasi.index') }}" class="btn btn-secondary">Kembali</a>
