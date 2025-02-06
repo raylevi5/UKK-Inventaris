@@ -52,7 +52,12 @@ class SubKategoriAssetController extends Controller
 
     public function destroy(SubKategoriAsset $subKategoriAsset)
     {
-        $subKategoriAsset->delete();
-        return redirect()->route('admin.sub_kategori_asset.index')->with('success', 'Sub Kategori Asset deleted successfully.');
+    // Cek apakah ada data terkait di Pengadaan
+    if ($subKategoriAsset->pengadaans()->exists()) {
+        return redirect()->route('admin.sub_kategori_asset.index')->with('error', 'Sub Kategori Asset tidak bisa dihapus karena masih ada data terkait di Pengadaan.');
+    }
+
+    $subKategoriAsset->delete();
+    return redirect()->route('admin.sub_kategori_asset.index')->with('success', 'Sub Kategori Asset berhasil dihapus.');
     }
 }

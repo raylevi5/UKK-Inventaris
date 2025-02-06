@@ -47,6 +47,11 @@ class KategoriAssetController extends Controller
 
     public function destroy(KategoriAsset $kategoriAsset)
     {
+        // Cek apakah ada data terkait di SubKategoriAsset
+        if ($kategoriAsset->subKategoriAssets()->exists()) {
+            return redirect()->route('admin.kategori_asset.index')->with('error', 'Kategori Asset tidak bisa dihapus karena masih ada data terkait di Sub Kategori Asset.');
+        }
+
         $kategoriAsset->delete();
         return redirect()->route('admin.kategori_asset.index')->with('success', 'Kategori Asset deleted successfully.');
     }

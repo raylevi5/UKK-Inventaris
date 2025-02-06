@@ -48,8 +48,13 @@ class LokasiController extends Controller
     }
 
     public function destroy(Lokasi $lokasi)
-    {
-        $lokasi->delete();
-        return redirect()->route('admin.lokasi.index')->with('success', 'Lokasi deleted successfully.');
+{
+    // Cek apakah ada data terkait di MutasiLokasi
+    if ($lokasi->mutasiLokasis()->exists()) {
+        return redirect()->route('admin.lokasi.index')->with('error', 'Lokasi tidak bisa dihapus karena masih ada data terkait di Mutasi Lokasi.');
     }
+
+    $lokasi->delete();
+    return redirect()->route('admin.lokasi.index')->with('success', 'Lokasi berhasil dihapus.');
+}
 }

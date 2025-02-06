@@ -65,10 +65,15 @@ class MasterBarangController extends Controller
 
     // Menghapus data barang
     public function destroy($id)
-    {
-        $barang = MasterBarang::findOrFail($id);
-        $barang->delete();
+{
+    $barang = MasterBarang::findOrFail($id);
 
-        return redirect()->route('admin.master_barang.index')->with('success', 'Barang berhasil dihapus');
+    // Cek apakah ada data terkait di Pengadaan
+    if ($barang->pengadaans()->exists()) {
+        return redirect()->route('admin.master_barang.index')->with('error', 'Barang tidak bisa dihapus karena masih ada data terkait di Pengadaan.');
     }
+
+    $barang->delete();
+    return redirect()->route('admin.master_barang.index')->with('success', 'Barang berhasil dihapus');
+}
 }

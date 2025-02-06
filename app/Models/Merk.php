@@ -17,4 +17,9 @@ class Merk extends Model
         'merk',
         'keterangan',
     ];
+
+    public function pengadaans()
+    {
+        return $this->hasMany(Pengadaan::class, 'id_merk');
+    }
 }

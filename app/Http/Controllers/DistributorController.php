@@ -61,9 +61,14 @@ class DistributorController extends Controller
     return redirect()->route('admin.distributor.index')->with('success', 'Distributor updated successfully.');
 }
 
-    public function destroy(Distributor $distributor)
-    {
-        $distributor->delete();
-        return redirect()->route('admin.distributor.index')->with('success', 'Distributor deleted successfully.');
+public function destroy(Distributor $distributor)
+{
+    // Cek apakah ada data terkait di Pengadaan
+    if ($distributor->pengadaans()->exists()) {
+        return redirect()->route('admin.distributor.index')->with('error', 'Distributor tidak bisa dihapus karena masih ada data terkait di Pengadaan.');
     }
+
+    $distributor->delete();
+    return redirect()->route('admin.distributor.index')->with('success', 'Distributor berhasil dihapus.');
+}
 }

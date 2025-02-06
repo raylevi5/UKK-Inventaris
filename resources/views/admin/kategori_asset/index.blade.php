@@ -105,6 +105,10 @@
             <p>{{ session('success') }}</p>
         @endif
 
+        @if(session('error'))
+            <p>{{ session('error') }}</p>
+        @endif
+
         <table>
             <thead>
                 <tr>

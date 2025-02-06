@@ -18,4 +18,9 @@ class Lokasi extends Model
         'nama_lokasi',
         'keterangan',
     ];
+
+    public function mutasiLokasis()
+    {
+        return $this->hasMany(MutasiLokasi::class, 'id_lokasi');
+    }
 }

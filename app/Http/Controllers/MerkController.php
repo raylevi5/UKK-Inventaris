@@ -46,8 +46,13 @@ class MerkController extends Controller
     }
 
     public function destroy(Merk $merk)
-    {
-        $merk->delete();
-        return redirect()->route('admin.merk.index')->with('success', 'Merk deleted successfully.');
+{
+    // Cek apakah ada data terkait di Pengadaan
+    if ($merk->pengadaans()->exists()) {
+        return redirect()->route('admin.merk.index')->with('error', 'Merk tidak bisa dihapus karena masih ada data terkait di Pengadaan.');
     }
+
+    $merk->delete();
+    return redirect()->route('admin.merk.index')->with('success', 'Merk berhasil dihapus.');
+}
 }

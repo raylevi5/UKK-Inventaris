@@ -46,8 +46,13 @@ class DepresiasiController extends Controller
     }
 
     public function destroy(Depresiasi $depresiasi)
-    {
-        $depresiasi->delete();
-        return redirect()->route('admin.depresiasi.index')->with('success', 'Depresiasi deleted successfully.');
+{
+    // Cek apakah ada data terkait di Pengadaan
+    if ($depresiasi->pengadaans()->exists()) {
+        return redirect()->route('admin.depresiasi.index')->with('error', 'Depresiasi tidak bisa dihapus karena masih ada data terkait di Pengadaan.');
     }
+
+    $depresiasi->delete();
+    return redirect()->route('admin.depresiasi.index')->with('success', 'Depresiasi berhasil dihapus.');
+}
 }

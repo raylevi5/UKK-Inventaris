@@ -102,13 +102,18 @@
         <a href="{{ route('admin.depresiasi.create') }}" class="add-item-link">Tambah Depresiasi</a>
 
         @if(session('success'))
-            <p>{{ session('success') }}</p>
-        @endif
+    <p>{{ session('success') }}</p>
+@endif
+
+@if(session('error'))
+    <p>{{ session('error') }}</p>
+@endif
 
         <table>
             <thead>
                 <tr>
                     <th>Lama Depresiasi</th>
+                    <th>Keterangan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -116,6 +121,7 @@
                 @foreach($depresiasis as $depresiasi)
                     <tr>
                         <td>{{ $depresiasi->lama_depresiasi }}</td>
+                        <td>{{ $depresiasi->keterangan }}</td>
                         <td>
                             <a href="{{ route('admin.depresiasi.edit', $depresiasi->id_depresiasi) }}">Edit</a>
                             <form action="{{ route('admin.depresiasi.destroy', $depresiasi->id_depresiasi) }}" method="POST" style="display:inline;">

@@ -103,8 +103,12 @@ php
         <a href="{{ route('admin.distributor.create') }}" class="add-item-link">Tambah Distributor</a>
 
         @if(session('success'))
-            <p>{{ session('success') }}</p>
-        @endif
+    <p>{{ session('success') }}</p>
+@endif
+
+@if(session('error'))
+    <p>{{ session('error') }}</p>
+@endif
 
         <table>
             <thead>

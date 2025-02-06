@@ -168,8 +168,23 @@ class PengadaanController extends Controller
 
     public function destroy(Pengadaan $pengadaan)
     {
-        $pengadaan->delete();
-        return redirect()->route('admin.pengadaan.index')->with('success', 'Pengadaan berhasil dihapus.');
+        // Cek apakah ada data terkait di MutasiLokasi
+    if ($pengadaan->mutasiLokasis()->exists()) {
+        return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Mutasi Lokasi.');
+    }
+
+    // Cek apakah ada data terkait di Opname
+    if ($pengadaan->opnames()->exists()) {
+        return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Opname.');
+    }
+
+    // Cek apakah ada data terkait di HitungDepresiasi
+    if ($pengadaan->hitungDepresiasis()->exists()) {
+        return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Hitung Depresiasi.');
+    }
+
+    $pengadaan->delete();
+    return redirect()->route('admin.pengadaan.index')->with('success', 'Pengadaan berhasil dihapus.');
     }
 
     public function depresiasiBarang()

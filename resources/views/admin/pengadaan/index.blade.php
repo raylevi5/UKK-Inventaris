@@ -109,9 +109,15 @@
     <div class="main-content">
         <h1>Data Pengadaan</h1>
         <a href="{{ route('admin.pengadaan.create') }}" class="add-item-link">Tambah Pengadaan</a>
+        
         @if(session('success'))
             <p>{{ session('success') }}</p>
         @endif
+
+        @if(session('error'))
+            <p>{{ session('error') }}</p>
+        @endif
+
         <table>
             <thead>
                 <tr>

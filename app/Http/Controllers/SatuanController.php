@@ -44,8 +44,13 @@ class SatuanController extends Controller
     }
 
     public function destroy(Satuan $satuan)
-    {
-        $satuan->delete();
-        return redirect()->route('admin.satuan.index')->with('success', 'Satuan deleted successfully.');
+{
+    // Cek apakah ada data terkait di Pengadaan
+    if ($satuan->pengadaans()->exists()) {
+        return redirect()->route('admin.satuan.index')->with('error', 'Satuan tidak bisa dihapus karena masih ada data terkait di Pengadaan.');
     }
+
+    $satuan->delete();
+    return redirect()->route('admin.satuan.index')->with('success', 'Satuan berhasil dihapus.');
+}
 }

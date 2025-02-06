@@ -17,4 +17,9 @@ class Depresiasi extends Model
         'lama_depresiasi',
         'keterangan',
     ];
+
+    public function pengadaans()
+    {
+        return $this->hasMany(Pengadaan::class, 'id_depresiasi');
+    }
 }

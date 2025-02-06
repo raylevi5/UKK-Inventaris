@@ -61,4 +61,19 @@ class Pengadaan extends Model
     {
         return $this->belongsTo(Distributor::class, 'id_distributor', 'id_distributor');
     }
+
+    public function mutasiLokasis()
+    {
+        return $this->hasMany(MutasiLokasi::class, 'id_pengadaan');
+    }
+
+    public function opnames()
+    {
+        return $this->hasMany(Opname::class, 'id_pengadaan');
+    }
+
+    public function hitungDepresiasis()
+    {
+        return $this->hasMany(HitungDepresiasi::class, 'id_pengadaan');
+    }
 }

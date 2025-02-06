@@ -23,4 +23,9 @@ class SubKategoriAsset extends Model
     {
         return $this->belongsTo(KategoriAsset::class, 'id_kategori_asset', 'id_kategori_asset');
     }
+
+    public function pengadaans()
+    {
+        return $this->hasMany(Pengadaan::class, 'id_sub_kategori_asset');
+    }
 }

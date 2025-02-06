@@ -18,4 +18,9 @@ class MasterBarang extends Model
         'nama_barang',
         'spesifikasi_teknis',
     ];
+
+    public function pengadaans()
+    {
+        return $this->hasMany(Pengadaan::class, 'id_master_barang');
+    }
 }
