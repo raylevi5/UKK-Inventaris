@@ -130,7 +130,7 @@ php
                             <form action="{{ route('admin.lokasi.destroy', $lokasi->id_lokasi) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-sm btn-danger">hapus</button>
                             </form>
                         </td>
                     </tr>
