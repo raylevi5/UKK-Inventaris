@@ -83,13 +83,36 @@
                 font-size: 14px;
             }
         }
-    </style>
+        </style>
+    <script>
+        function handleKondisiChange() {
+            const kondisi = document.getElementById('kondisi').value;
+            const keterangan = document.getElementById('keterangan');
+            if (kondisi === 'baik') {
+                keterangan.value = 'tidak ada';
+                keterangan.disabled = true;
+            } else {
+                keterangan.value = '';
+                keterangan.disabled = false;
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            handleKondisiChange();
+            document.getElementById('kondisi').addEventListener('change', handleKondisiChange);
+            document.querySelector('form').addEventListener('submit', function() {
+                const keterangan = document.getElementById('keterangan');
+                if (keterangan.disabled) {
+                    keterangan.disabled = false;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <h1>Edit Opname</h1>
 
     <div class="form-container">
-        <form action="{{ route('admin.opname.update', $opname->id) }}" method="POST">
+        <form action="{{ route('admin.opname.update', ['opname' => $opname->id_opname]) }}" method="POST">
             @csrf
             @method('PUT')
             
@@ -107,7 +130,11 @@
             <input type="date" name="tgl_opname" id="tgl_opname" value="{{ $opname->tgl_opname }}" required>
 
             <label for="kondisi">Kondisi</label>
-            <input type="text" name="kondisi" id="kondisi" value="{{ $opname->kondisi }}" required>
+            <select name="kondisi" id="kondisi" required>
+                <option value="baik" {{ $opname->kondisi == 'baik' ? 'selected' : '' }}>Baik</option>
+                <option value="rusak" {{ $opname->kondisi == 'rusak' ? 'selected' : '' }}>Rusak</option>
+                <option value="hilang" {{ $opname->kondisi == 'hilang' ? 'selected' : '' }}>Hilang</option>
+            </select>
 
             <label for="keterangan">Keterangan</label>
             <textarea name="keterangan" id="keterangan" required>{{ $opname->keterangan }}</textarea>

@@ -84,6 +84,29 @@
             }
         }
     </style>
+    <script>
+        function handleKondisiChange() {
+            const kondisi = document.getElementById('kondisi').value;
+            const keterangan = document.getElementById('keterangan');
+            if (kondisi === 'baik') {
+                keterangan.value = 'tidak ada';
+                keterangan.disabled = true;
+            } else {
+                keterangan.value = '';
+                keterangan.disabled = false;
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            handleKondisiChange();
+            document.getElementById('kondisi').addEventListener('change', handleKondisiChange);
+            document.querySelector('form').addEventListener('submit', function() {
+                const keterangan = document.getElementById('keterangan');
+                if (keterangan.disabled) {
+                    keterangan.disabled = false;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <h1>Tambah Opname</h1>
@@ -102,7 +125,11 @@
             <input type="date" name="tgl_opname" id="tgl_opname" required>
 
             <label for="kondisi">Kondisi</label>
-            <input type="text" name="kondisi" id="kondisi" required>
+            <select name="kondisi" id="kondisi" required>
+                <option value="baik">Baik</option>
+                <option value="rusak">Rusak</option>
+                <option value="hilang">Hilang</option>
+            </select>
 
             <label for="keterangan">Keterangan</label>
             <textarea name="keterangan" id="keterangan" required></textarea>
