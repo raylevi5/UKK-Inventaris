@@ -15,24 +15,23 @@ use Carbon\Carbon;
 class PengadaanController extends Controller
 {
     public function index()
-{
-    $pengadaans = Pengadaan::with([
-        'masterBarang',
-        'depresiasi', 
-        'merk',
-        'satuan',
-        'subKategoriAsset',
-        'distributor'
-    ])->get();
+    {
+        $pengadaans = Pengadaan::with([
+            'masterBarang',
+            'depresiasi', 
+            'merk',
+            'satuan',
+            'subKategoriAsset',
+            'distributor'
+        ])->get();
 
-    return view('admin.pengadaan.index', compact('pengadaans'));
-}
+        return view('admin.pengadaan.index', compact('pengadaans'));
+    }
 
     public function create()
     {
         $masterBarangs = MasterBarang::all();
         $depresiasis = Depresiasi::all();
-        // dd($depresiasis);
         $merks = Merk::all();
         $satuans = Satuan::all();
         $subKategoriAssets = SubKategoriAsset::all();
@@ -49,13 +48,13 @@ class PengadaanController extends Controller
     }
 
     private function calculateDepreciation($hargaBarang, $lamaDepresiasi) 
-{
-    // Avoid division by zero
-    if ($lamaDepresiasi <= 0) {
-        return 0;
+    {
+        // Avoid division by zero
+        if ($lamaDepresiasi <= 0) {
+            return 0;
+        }
+        return $hargaBarang / $lamaDepresiasi;
     }
-    return $hargaBarang / $lamaDepresiasi;
-}
 
     public function store(Request $request) 
     {
@@ -71,6 +70,7 @@ class PengadaanController extends Controller
                 'no_invoice' => 'required|string|max:20',
                 'no_seri_barang' => 'required|string|max:50',
                 'tahun_produksi' => 'required|string|max:5',
+                'jumlah_stok' => 'required|integer',
                 'tgl_pengadaan' => 'required|date',
                 'harga_barang' => 'required|integer',
                 'nilai_barang' => 'required|integer',
@@ -78,38 +78,28 @@ class PengadaanController extends Controller
                 'keterangan' => 'nullable|string|max:50'
             ]);
 
-            //Get Depresiasi data
+            // Get Depresiasi data
             $depresiasi = Depresiasi::find($request->id_depresiasi);
-        $validatedData['usia_barang'] = $depresiasi->lama_depresiasi * 12; // Convert years to months
-        
-        // Calculate depreciation: harga_barang / lama_depresiasi
-        $validatedData['depresiasi_barang'] = $this->calculateDepreciation(
-            $validatedData['harga_barang'],
-            $depresiasi->lama_depresiasi
-        );
+            $validatedData['usia_barang'] = $depresiasi->lama_depresiasi * 12; // Convert years to months
+            
+            // Calculate depreciation: harga_barang / lama_depresiasi
+            $validatedData['depresiasi_barang'] = $this->calculateDepreciation(
+                $validatedData['harga_barang'],
+                $depresiasi->lama_depresiasi
+            );
 
-        $pengadaan = Pengadaan::create($validatedData);
+            $pengadaan = Pengadaan::create($validatedData);
 
-        return redirect()
-            ->route('admin.pengadaan.index')
-            ->with('success', 'Pengadaan berhasil ditambahkan.');
-
-    } catch (\Exception $e) {
-        \Log::error('Error creating pengadaan:', [
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
-        ]);
-        return back()->with('error', 'Terjadi kesalahan saat menambah pengadaan.');
+            return redirect()
+                ->route('admin.pengadaan.index')
+                ->with('success', 'Pengadaan berhasil ditambahkan.');
 
         } catch (\Exception $e) {
             \Log::error('Error creating pengadaan:', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-
-            return back()
-                ->withInput()
-                ->withErrors(['error' => 'Gagal menyimpan: ' . $e->getMessage()]);
+            return back()->with('error', 'Terjadi kesalahan saat menambah pengadaan.');
         }
     }
 
@@ -126,7 +116,7 @@ class PengadaanController extends Controller
             'pengadaan',
             'masterBarangs',
             'depresiasis',
-            'merks',
+            'merks', 
             'satuans',
             'subKategoriAssets',
             'distributors'
@@ -136,20 +126,21 @@ class PengadaanController extends Controller
     public function update(Request $request, Pengadaan $pengadaan)
     {
         $validatedData = $request->validate([
-            'id_master_barang' => 'required',
-            'id_depresiasi' => 'required', 
-            'id_merk' => 'required',
-            'id_satuan' => 'required',
-            'id_sub_kategori_asset' => 'required',
-            'id_distributor' => 'required',
+            'id_master_barang' => 'required|exists:tbl_master_barang,id_barang',
+            'id_depresiasi' => 'required|exists:tbl_depresiasi,id_depresiasi',
+            'id_merk' => 'required|exists:tbl_merk,id_merk',
+            'id_satuan' => 'required|exists:tbl_satuan,id_satuan',
+            'id_sub_kategori_asset' => 'required|exists:tbl_sub_kategori_asset,id_sub_kategori_asset',
+            'id_distributor' => 'required|exists:tbl_distributor,id_distributor',
             'kode_pengadaan' => 'required|string|max:20',
             'no_invoice' => 'required|string|max:20',
             'no_seri_barang' => 'required|string|max:50',
             'tahun_produksi' => 'required|string|max:5',
+            'jumlah_stok' => 'required|integer',
             'tgl_pengadaan' => 'required|date',
             'harga_barang' => 'required|integer',
             'nilai_barang' => 'required|integer',
-            'fb' => 'required',
+            'fb' => 'required|in:0,1',
             'keterangan' => 'nullable|string|max:50'
         ]);
 
@@ -158,8 +149,7 @@ class PengadaanController extends Controller
         $validatedData['usia_barang'] = $depresiasi->lama_depresiasi * 12;
         $validatedData['depresiasi_barang'] = $this->calculateDepreciation(
             $validatedData['harga_barang'],
-            $validatedData['usia_barang'],
-            $validatedData['tgl_pengadaan']
+            $depresiasi->lama_depresiasi
         );
 
         $pengadaan->update($validatedData);
@@ -169,22 +159,22 @@ class PengadaanController extends Controller
     public function destroy(Pengadaan $pengadaan)
     {
         // Cek apakah ada data terkait di MutasiLokasi
-    if ($pengadaan->mutasiLokasis()->exists()) {
-        return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Mutasi Lokasi.');
-    }
+        if ($pengadaan->mutasiLokasis()->exists()) {
+            return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Mutasi Lokasi.');
+        }
 
-    // Cek apakah ada data terkait di Opname
-    if ($pengadaan->opnames()->exists()) {
-        return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Opname.');
-    }
+        // Cek apakah ada data terkait di Opname
+        if ($pengadaan->opnames()->exists()) {
+            return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Opname.');
+        }
 
-    // Cek apakah ada data terkait di HitungDepresiasi
-    if ($pengadaan->hitungDepresiasis()->exists()) {
-        return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Hitung Depresiasi.');
-    }
+        // Cek apakah ada data terkait di HitungDepresiasi
+        if ($pengadaan->hitungDepresiasis()->exists()) {
+            return redirect()->route('admin.pengadaan.index')->with('error', 'Pengadaan tidak bisa dihapus karena masih ada data terkait di Hitung Depresiasi.');
+        }
 
-    $pengadaan->delete();
-    return redirect()->route('admin.pengadaan.index')->with('success', 'Pengadaan berhasil dihapus.');
+        $pengadaan->delete();
+        return redirect()->route('admin.pengadaan.index')->with('success', 'Pengadaan berhasil dihapus.');
     }
 
     public function depresiasiBarang()

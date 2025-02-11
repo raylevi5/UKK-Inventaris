@@ -121,6 +121,7 @@
                     <th>No Invoice</th>
                     <th>No Seri</th>
                     <th>Tahun Produksi</th>
+                    <th>Jumlah Stok</th>
                     <th>Tanggal Pengadaan</th>
                     <th>Harga Barang</th>
                     <th>Nilai Barang</th>
@@ -143,6 +144,7 @@
                         <td>{{ $pengadaan->no_invoice }}</td>
                         <td>{{ $pengadaan->no_seri_barang }}</td>
                         <td>{{ $pengadaan->tahun_produksi }}</td>
+                        <td>{{ $pengadaan->jumlah_stok }}</td>
                         <td>{{ $pengadaan->tgl_pengadaan }}</td>
                         <td>Rp {{ $pengadaan->harga_barang }}</td>
                         <td>Rp {{ $pengadaan->nilai_barang }}</td>

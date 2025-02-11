@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('no_invoice', 20); // Kolom no_invoice bertipe VARCHAR(20)
             $table->string('no_seri_barang', 50); // Kolom no_seri_barang bertipe VARCHAR(50)
             $table->string('tahun_produksi', 5); // Kolom tahun_produksi bertipe VARCHAR(5)
+            $table->integer('jumlah_stok'); // Kolom jumlah_stok bertipe INT
             $table->date('tgl_pengadaan'); // Kolom tgl_pengadaan bertipe DATE
             $table->integer('harga_barang'); // Kolom harga_barang bertipe INT
             $table->integer('nilai_barang'); // Kolom nilai_barang bertipe INT

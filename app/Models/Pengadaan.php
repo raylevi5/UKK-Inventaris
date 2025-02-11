@@ -23,6 +23,7 @@ class Pengadaan extends Model
         'no_invoice',
         'no_seri_barang',
         'tahun_produksi',
+        'jumlah_stok',
         'tgl_pengadaan',
         'harga_barang',
         'nilai_barang',

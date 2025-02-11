@@ -173,6 +173,10 @@
             <input type="text" name="tahun_produksi" id="tahun_produksi" value="{{ old('tahun_produksi', $pengadaan->tahun_produksi) }}" class="form-control @error('tahun_produksi') is-invalid @enderror">
             @error('tahun_produksi')<div class="invalid-feedback">{{ $message }}</div>@enderror
 
+            <label for="jumlah_stok">Jumlah Stok</label>
+            <input type="number" name="jumlah_stok" id="jumlah_stok" value="{{ old('jumlah_stok', $pengadaan->jumlah_stok) }}" class="form-control @error('jumlah_stok') is-invalid @enderror">
+            @error('jumlah_stok')<div class="invalid-feedback">{{ $message }}</div>@enderror
+
             <label for="tgl_pengadaan">Tanggal Pengadaan</label>
             <input type="date" name="tgl_pengadaan" id="tgl_pengadaan" value="{{ old('tgl_pengadaan', $pengadaan->tgl_pengadaan) }}" class="form-control @error('tgl_pengadaan') is-invalid @enderror">
             @error('tgl_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror

@@ -148,6 +148,12 @@
             </div>
 
             <div class="form-group">
+                <label>Jumlah Stok</label>
+                <input type="number" name="jumlah_stok" class="form-control @error('jumlah_stok') is-invalid @enderror">
+                @error('jumlah_stok')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+
+            <div class="form-group">
                 <label>Tanggal Pengadaan</label>
                 <input type="date" name="tgl_pengadaan" class="form-control @error('tgl_pengadaan') is-invalid @enderror">
                 @error('tgl_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror

@@ -57,6 +57,10 @@
                             <td>: {{ $pengadaan->tahun_produksi }}</td>
                         </tr>
                         <tr>
+                            <th>Jumlah Stok</th>
+                            <td>: {{ $pengadaan->jumlah_stok }}</td>
+                        </tr>
+                        <tr>
                             <th>Tanggal Pengadaan</th>
                             <td>: {{ $pengadaan->tgl_pengadaan }}</td>
                         </tr>
