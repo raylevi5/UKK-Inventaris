@@ -88,7 +88,7 @@
 </head>
 <body>
     <div class="sidebar">
-        <h4>Admin Inventaris</h4>
+        <h4>Admin Inventariss</h4>
         <ul class="nav flex-column">
             <li class="nav-item"><a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a></li>
             <li class="nav-item"><a href="{{ route('admin.master_barang.index') }}" class="nav-link">Master Barang</a></li>
